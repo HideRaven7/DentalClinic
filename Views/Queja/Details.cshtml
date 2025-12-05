@@ -1,0 +1,66 @@
+@model Queja
+
+@{
+    ViewData["Title"] = "Detalles de Queja";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Detalles de la Queja</h1>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>@Model.Titulo</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>ID:</strong> @Model.Id</p>
+                            <p><strong>Cliente:</strong> @Model.Cliente?.Nombre</p>
+                            <p><strong>Servicio:</strong> @Model.Servicio?.Nombre</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                <strong>Calificación:</strong>
+                                @{
+                                    var stars = string.Concat(Enumerable.Repeat("⭐", Model.Calificacion));
+                                }
+                                @Html.Raw(stars) (@Model.Calificacion/5)
+                            </p>
+                            <p>
+                                <strong>Estado:</strong>
+                                @{
+                                    var badgeClass = Model.Estado switch
+                                    {
+                                        "Pendiente" => "badge bg-warning text-dark",
+                                        "En Revisión" => "badge bg-info",
+                                        "Resuelta" => "badge bg-success",
+                                        _ => "badge bg-secondary"
+                                    };
+                                }
+                                <span class="@badgeClass">@Model.Estado</span>
+                            </p>
+                            <p><strong>Fecha de Creación:</strong> @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="mb-3">
+                        <h5>Descripción de la Queja:</h5>
+                        <p class="text-muted">@Model.Descripcion</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-grid gap-2 d-md-flex justify-content-md-between">
+                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

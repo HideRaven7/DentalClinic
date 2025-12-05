@@ -1,0 +1,81 @@
+@model IEnumerable<Queja>
+
+@{
+    ViewData["Title"] = "Quejas";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h1>Quejas de Servicios</h1>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-action="Create" class="btn btn-primary">+ Nueva Queja</a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No hay quejas registradas. <a asp-action="Create">Crear una nueva queja</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Título</th>
+                        <th>Calificación</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var queja in Model)
+                    {
+                        <tr>
+                            <td>@queja.Id</td>
+                            <td>@queja.Cliente?.Nombre</td>
+                            <td>@queja.Servicio?.Nombre</td>
+                            <td>
+                                <span class="text-truncate d-inline-block" style="max-width: 200px;" title="@queja.Titulo">
+                                    @queja.Titulo
+                                </span>
+                            </td>
+                            <td>
+                                @{
+                                    var stars = string.Concat(Enumerable.Repeat("⭐", queja.Calificacion));
+                                }
+                                <span>@Html.Raw(stars) (@queja.Calificacion/5)</span>
+                            </td>
+                            <td>
+                                @{
+                                    var badgeClass = queja.Estado switch
+                                    {
+                                        "Pendiente" => "badge bg-warning text-dark",
+                                        "En Revisión" => "badge bg-info",
+                                        "Resuelta" => "badge bg-success",
+                                        _ => "badge bg-secondary"
+                                    };
+                                }
+                                <span class="@badgeClass">@queja.Estado</span>
+                            </td>
+                            <td>@queja.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@queja.Id" class="btn btn-sm btn-info">Ver</a>
+                                <a asp-action="Edit" asp-route-id="@queja.Id" class="btn btn-sm btn-warning">Editar</a>
+                                <a asp-action="Delete" asp-route-id="@queja.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

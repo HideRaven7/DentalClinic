@@ -1,0 +1,34 @@
+@model Queja
+
+@{
+    ViewData["Title"] = "Eliminar Queja";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="alert alert-danger">
+                <h4>¿Estás seguro de que deseas eliminar esta queja?</h4>
+                <p>Esta acción no se puede deshacer.</p>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p><strong>Título:</strong> @Model.Titulo</p>
+                    <p><strong>Cliente:</strong> @Model.Cliente?.Nombre</p>
+                    <p><strong>Servicio:</strong> @Model.Servicio?.Nombre</p>
+                    <p><strong>Calificación:</strong> @Model.Calificacion/5</p>
+                    <p><strong>Estado:</strong> @Model.Estado</p>
+                </div>
+            </div>
+
+            <form method="post" asp-action="DeleteConfirmed">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -14,6 +14,7 @@ namespace DentalClinic.Data
         public DbSet<HorarioAtencion> HorarioAtencion => Set<HorarioAtencion>();
         public DbSet<ConfiguracionEmpresa> ConfiguracionEmpresa => Set<ConfiguracionEmpresa>();
         public DbSet<Reserva> Reserva => Set<Reserva>();
+        public DbSet<Queja> Queja => Set<Queja>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
